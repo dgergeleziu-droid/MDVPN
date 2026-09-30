@@ -43,13 +43,7 @@ struct ContentView: View {
                 // ─── Сервер ────────────────────────────────────────
                 ServerRow(server: vpn.selectedServer, isActive: vpn.state.isOn)
                     .padding(.horizontal, 20)
-
-                Spacer().frame(height: 14)
-
-                // ─── Реклама ───────────────────────────────────────
-                AdBanner()
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 24)
             }
         }
     }
