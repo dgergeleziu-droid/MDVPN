@@ -24,25 +24,34 @@ extension Color {
     }
 }
 
+/// Фирменная палитра M&D — зелёный + серый
 enum Palette {
-    /// Фон приложения — глубокий тёмный с холодным оттенком
-    static let background     = Color(hex: "#0A0E14")
-    static let backgroundSoft = Color(hex: "#121822")
-    static let surface        = Color(hex: "#1A2230")
-    static let surfaceHigh    = Color(hex: "#232D3D")
 
-    /// Основные акценты
-    static let accent         = Color(hex: "#4A9EFF")
-    static let accentSoft     = Color(hex: "#7BC0FF")
-    static let success        = Color(hex: "#3DDC84")
-    static let danger         = Color(hex: "#FF5A5F")
-    static let warning        = Color(hex: "#FFB84D")
+    // ─── Зелёный (главный акцент) ────────────────────────────
+    static let green        = Color(hex: "#22C55E")   // основной зелёный
+    static let greenDark    = Color(hex: "#16A34A")   // для градиента
+    static let greenLight   = Color(hex: "#4ADE80")   // подсветка
+    static let greenGlow    = Color(hex: "#22C55E")   // свечение
 
-    /// Текст
-    static let textPrimary    = Color(hex: "#F5F7FA")
-    static let textSecondary  = Color(hex: "#98A2B3")
-    static let textDim        = Color(hex: "#59616B")
+    // ─── Серый (фон и поверхности) ───────────────────────────
+    static let background   = Color(hex: "#1A1D21")   // тёмно-серый фон
+    static let backgroundHi = Color(hex: "#23272E")   // чуть светлее
+    static let surface      = Color(hex: "#2A2F36")   // карточки
+    static let surfaceHi    = Color(hex: "#343A43")   // акцентные карточки
+    static let stroke       = Color(hex: "#3A4048")   // границы
 
-    /// Логотип M&D — приглушённый серо-графитовый
-    static let logoText       = Color(hex: "#59616B")
+    // ─── Текст ───────────────────────────────────────────────
+    static let textPrimary  = Color(hex: "#F1F5F9")
+    static let textSecondary = Color(hex: "#A1A9B3")
+    static let textDim      = Color(hex: "#6B7280")
+
+    // ─── Статусы ─────────────────────────────────────────────
+    static let danger       = Color(hex: "#EF4444")
+    static let warning      = Color(hex: "#F59E0B")
+
+    // ─── Логотип M&D ─────────────────────────────────────────
+    /// Когда приложение в состоянии "не подключено" — лого серое
+    static let logoGray     = Color(hex: "#7B8493")
+    /// Когда подключено — лого зелёное
+    static let logoGreen    = Color(hex: "#22C55E")
 }
