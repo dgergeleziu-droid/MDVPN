@@ -5,73 +5,104 @@ struct ContentView: View {
     @EnvironmentObject var vpn: VPNManager
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                // Фон
-                LinearGradient(
-                    colors: [Palette.background, Palette.backgroundSoft],
-                    startPoint: .top, endPoint: .bottom
-                )
-                .ignoresSafeArea()
+        ZStack {
+            LinearGradient(
+                colors: [Palette.background, Palette.backgroundHi],
+                startPoint: .top, endPoint: .bottom
+            )
+            .ignoresSafeArea()
 
-                VStack(spacing: 0) {
+            VStack(spacing: 0) {
 
-                    // ─── Верхняя полоса с логотипом M&D ─────────────
-                    HStack {
-                        Spacer()
-                        MDLogo()
-                            .padding(.trailing, 20)
-                            .padding(.top, 6)
-                    }
+                // ─── ЛОГО M&D — ПО ЦЕНТРУ СВЕРХУ ────────────────────
+                MDLogo(isActive: vpn.state.isOn)
+                    .padding(.top, 24)
 
-                    Spacer()
+                Spacer().frame(height: 20)
 
-                    // ─── Статус ────────────────────────────────────
-                    VStack(spacing: 8) {
-                        Text(vpn.state.title)
-                            .font(.system(size: 28, weight: .semibold, design: .rounded))
-                            .foregroundColor(Palette.textPrimary)
+                // ─── Статус ────────────────────────────────────────
+                StatusBadge(state: vpn.state)
 
-                        Text(vpn.state.subtitle)
-                            .font(.system(size: 15, weight: .regular))
-                            .foregroundColor(Palette.textSecondary)
-                    }
+                Spacer().frame(height: 8)
 
-                    Spacer().frame(height: 40)
+                Text(vpn.state.subtitle)
+                    .font(.system(size: 13))
+                    .foregroundColor(Palette.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
 
-                    // ─── Кнопка Connect ────────────────────────────
-                    ConnectButton(state: vpn.state) {
-                        vpn.toggle()
-                    }
+                Spacer()
 
-                    Spacer().frame(height: 32)
-
-                    // ─── Выбранный сервер ──────────────────────────
-                    HStack(spacing: 10) {
-                        Text(vpn.selectedServer.flag)
-                            .font(.system(size: 22))
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(vpn.selectedServer.country)
-                                .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(Palette.textPrimary)
-                            Text(vpn.selectedServer.city)
-                                .font(.system(size: 12))
-                                .foregroundColor(Palette.textSecondary)
-                        }
-                        Spacer()
-                        Text("\(vpn.selectedServer.ping) ms")
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(Palette.success)
-                    }
-                    .padding(.horizontal, 18)
-                    .padding(.vertical, 12)
-                    .background(Palette.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                    .padding(.horizontal, 24)
-
-                    Spacer()
+                // ─── Кнопка Connect ────────────────────────────────
+                ConnectButton(state: vpn.state) {
+                    vpn.toggle()
                 }
+
+                Spacer()
+
+                // ─── Сервер ────────────────────────────────────────
+                ServerRow(server: vpn.selectedServer, isActive: vpn.state.isOn)
+                    .padding(.horizontal, 20)
+
+                Spacer().frame(height: 14)
+
+                // ─── Реклама ───────────────────────────────────────
+                AdBanner()
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 10)
             }
         }
+    }
+}
+
+// ─── Строка выбранного сервера ───────────────────────────────
+
+struct ServerRow: View {
+
+    let server: Server
+    let isActive: Bool
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(server.flag)
+                .font(.system(size: 26))
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(server.country)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(Palette.textPrimary)
+                Text(server.city)
+                    .font(.system(size: 12))
+                    .foregroundColor(Palette.textSecondary)
+            }
+
+            Spacer()
+
+            VStack(alignment: .trailing, spacing: 2) {
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(Palette.green)
+                        .frame(width: 6, height: 6)
+                    Text("\(server.ping) ms")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(Palette.green)
+                }
+                Text("Fastest")
+                    .font(.system(size: 10))
+                    .foregroundColor(Palette.textDim)
+            }
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(Palette.textDim)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
+        .background(Palette.surface)
+        .overlay(
+            RoundedRectangle(cornerRadius: 14)
+                .stroke(Palette.stroke, lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 }
