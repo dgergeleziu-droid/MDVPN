@@ -10,30 +10,25 @@ enum VPNState: Equatable {
     var title: String {
         switch self {
         case .disconnected:  return "Not Connected"
-        case .connecting:    return "Connecting..."
-        case .connected:     return "Connected"
-        case .disconnecting: return "Disconnecting..."
+        case .connecting:    return "Connecting"
+        case .connected:     return "Protected"
+        case .disconnecting: return "Disconnecting"
         case .error:         return "Error"
         }
     }
 
     var subtitle: String {
         switch self {
-        case .disconnected:  return "Tap to connect"
-        case .connecting:    return "Please wait"
-        case .connected:     return "Your connection is protected"
+        case .disconnected:  return "Tap the button to protect your connection"
+        case .connecting:    return "Finding fastest server..."
+        case .connected:     return "Your traffic is encrypted end-to-end"
         case .disconnecting: return "Please wait"
-        case .error(let msg): return msg
+        case .error(let m):  return m
         }
     }
 
-    var isBusy: Bool {
-        self == .connecting || self == .disconnecting
-    }
-
-    var isOn: Bool {
-        self == .connected
-    }
+    var isBusy: Bool { self == .connecting || self == .disconnecting }
+    var isOn: Bool   { self == .connected }
 }
 
 struct Server: Identifiable, Equatable {
@@ -41,7 +36,7 @@ struct Server: Identifiable, Equatable {
     let country: String
     let city: String
     let flag: String
-    let ping: Int   // ms
+    let ping: Int
 
     static let sample: [Server] = [
         Server(country: "Netherlands", city: "Amsterdam", flag: "🇳🇱", ping: 24),
